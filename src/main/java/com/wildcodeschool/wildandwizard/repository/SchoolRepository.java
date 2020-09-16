@@ -22,6 +22,7 @@ public class SchoolRepository implements CrudDao<School> {
         ResultSet generatedKeys = null;
 
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -33,23 +34,27 @@ public class SchoolRepository implements CrudDao<School> {
             statement.setLong(2, school.getCapacity());
             statement.setString(3, school.getCountry());
 
-
             if (statement.executeUpdate() != 1) {
+
                 throw new SQLException("failed to insert data");
             }
 
             generatedKeys = statement.getGeneratedKeys();
 
             if (generatedKeys.next()) {
+
                 Long id = generatedKeys.getLong(1);
                 school.setId(id);
                 return school;
             } else {
+
                 throw new SQLException("failed to get inserted id");
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
         } finally {
+
             JdbcUtils.closeResultSet(generatedKeys);
             JdbcUtils.closeStatement(statement);
             JdbcUtils.closeConnection(connection);
@@ -65,6 +70,7 @@ public class SchoolRepository implements CrudDao<School> {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -80,8 +86,10 @@ public class SchoolRepository implements CrudDao<School> {
                 return new School(id, name, capacity, country);
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
         } finally {
+
             JdbcUtils.closeResultSet(resultSet);
             JdbcUtils.closeStatement(statement);
             JdbcUtils.closeConnection(connection);
@@ -96,6 +104,7 @@ public class SchoolRepository implements CrudDao<School> {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -107,6 +116,7 @@ public class SchoolRepository implements CrudDao<School> {
             List<School> schools = new ArrayList<>();
 
             while (resultSet.next()) {
+
                 Long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 Long capacity = resultSet.getLong("capacity");
@@ -116,8 +126,10 @@ public class SchoolRepository implements CrudDao<School> {
             }
             return schools;
         } catch (SQLException e) {
+
             e.printStackTrace();
         } finally {
+
             JdbcUtils.closeResultSet(resultSet);
             JdbcUtils.closeStatement(statement);
             JdbcUtils.closeConnection(connection);
@@ -131,6 +143,7 @@ public class SchoolRepository implements CrudDao<School> {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -143,13 +156,16 @@ public class SchoolRepository implements CrudDao<School> {
             statement.setLong(4, school.getId());
 
             if (statement.executeUpdate() != 1) {
+
                 throw new SQLException("failed to update data");
             }
             return school;
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
         finally {
+
             JdbcUtils.closeStatement(statement);
             JdbcUtils.closeConnection(connection);
         }
@@ -162,6 +178,7 @@ public class SchoolRepository implements CrudDao<School> {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -171,12 +188,15 @@ public class SchoolRepository implements CrudDao<School> {
             statement.setLong(1, id);
 
             if (statement.executeUpdate() != 1) {
+
                 throw new SQLException("failed to delete data");
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
         finally {
+
             JdbcUtils.closeStatement(statement);
             JdbcUtils.closeConnection(connection);
         }

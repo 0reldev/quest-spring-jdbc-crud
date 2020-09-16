@@ -20,6 +20,7 @@ public class WizardRepository implements CrudDao<Wizard> {
 		PreparedStatement statement = null;
 		ResultSet generatedKeys = null;
         try {
+
             connection = DriverManager.getConnection(
             		DB_URL, DB_USER, DB_PASSWORD
             );
@@ -35,21 +36,26 @@ public class WizardRepository implements CrudDao<Wizard> {
             statement.setBoolean(6, wizard.isMuggle());
 
             if (statement.executeUpdate() != 1) {
+
                 throw new SQLException("failed to insert data");
             }
 
             generatedKeys = statement.getGeneratedKeys();
 
             if (generatedKeys.next()) {
+
                 Long id = generatedKeys.getLong(1);
                 wizard.setId(id);
                 return wizard;
             } else {
+
                 throw new SQLException("failed to get inserted id");
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
 		} finally {
+
 			JdbcUtils.closeResultSet(generatedKeys);
 			JdbcUtils.closeStatement(statement);
 			JdbcUtils.closeConnection(connection);
@@ -64,6 +70,7 @@ public class WizardRepository implements CrudDao<Wizard> {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -74,6 +81,7 @@ public class WizardRepository implements CrudDao<Wizard> {
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
+
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
                 Date birthday = resultSet.getDate("birthday");
@@ -83,8 +91,10 @@ public class WizardRepository implements CrudDao<Wizard> {
                 return new Wizard(id, firstName, lastName, birthday, birthPlace, biography, muggle);
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
 		} finally {
+
 			JdbcUtils.closeResultSet(resultSet);
 			JdbcUtils.closeStatement(statement);
 			JdbcUtils.closeConnection(connection);
@@ -99,6 +109,7 @@ public class WizardRepository implements CrudDao<Wizard> {
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -110,6 +121,7 @@ public class WizardRepository implements CrudDao<Wizard> {
             List<Wizard> wizards = new ArrayList<>();
 
             while (resultSet.next()) {
+
                 Long id = resultSet.getLong("id");
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
@@ -121,8 +133,10 @@ public class WizardRepository implements CrudDao<Wizard> {
             }
             return wizards;
         } catch (SQLException e) {
+
             e.printStackTrace();
 		} finally {
+
 			JdbcUtils.closeResultSet(resultSet);
 			JdbcUtils.closeStatement(statement);
 			JdbcUtils.closeConnection(connection);
@@ -132,9 +146,11 @@ public class WizardRepository implements CrudDao<Wizard> {
 
     @Override
     public Wizard update(Wizard wizard) {
+
 		Connection connection = null;
 		PreparedStatement statement = null;
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -150,13 +166,16 @@ public class WizardRepository implements CrudDao<Wizard> {
             statement.setLong(7, wizard.getId());
 
             if (statement.executeUpdate() != 1) {
+
                 throw new SQLException("failed to update data");
             }
             return wizard;
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
 		finally {
+
 			JdbcUtils.closeStatement(statement);
 			JdbcUtils.closeConnection(connection);
 		}
@@ -165,9 +184,11 @@ public class WizardRepository implements CrudDao<Wizard> {
 
     @Override
     public void deleteById(Long id) {
+
 		Connection connection = null;
 		PreparedStatement statement = null;
         try {
+
             connection = DriverManager.getConnection(
                     DB_URL, DB_USER, DB_PASSWORD
             );
@@ -177,12 +198,15 @@ public class WizardRepository implements CrudDao<Wizard> {
             statement.setLong(1, id);
 
             if (statement.executeUpdate() != 1) {
+
                 throw new SQLException("failed to delete data");
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
 		finally {
+
 			JdbcUtils.closeStatement(statement);
 			JdbcUtils.closeConnection(connection);
 		}

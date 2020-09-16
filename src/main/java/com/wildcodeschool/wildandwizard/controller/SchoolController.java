@@ -18,7 +18,6 @@ public class SchoolController {
     public String getAll(Model model) {
 
         model.addAttribute("schools", repository.findAll());
-
         return "schools";
     }
 
@@ -28,10 +27,10 @@ public class SchoolController {
 
         School school = new School();
         if (id != null) {
+
             school = repository.findById(id);
         }
         model.addAttribute("school", school);
-
         return "school";
     }
 
@@ -39,8 +38,10 @@ public class SchoolController {
     public String postSchool(@ModelAttribute School school) {
 
         if (school.getId() != null) {
+
             repository.update(school);
         } else {
+
             repository.save(school);
         }
         return "redirect:/schools";
@@ -50,7 +51,6 @@ public class SchoolController {
     public String deleteSchool(@RequestParam Long id) {
 
         repository.deleteById(id);
-
         return "redirect:/schools";
     }
 }
